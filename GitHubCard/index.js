@@ -3,8 +3,36 @@
     (replacing the placeholder with your Github name):
     https://api.github.com/users/<your name>
 */
+const followersArray = [
+    
+    'tetondan',
+    'dustinmyers',
+    'justsml',
+    'luishrd',
+    'bigknell',
+    '19jlevitre',
+];
+const axios = require('axios');
+followersArray.forEach(userName => {
+  
+
+      axios.get(`https://api.github.com/users/${userName}`)
+      .then(resp => {
+        let myObj = resp.data;
+        userMaker(myObj);
+        const cards = document.querySelector('.cards');
+        const userCard = userMaker(myObj);
+          cards.appendChild(userCard);
+      })
+      .catch(err => {
+        console.log(err);
+      })
+
+});
+
 
 /*
+console.log(getFollowers(followersArray));
   STEP 2: Inspect and study the data coming back, this is YOUR
     github info! You will need to understand the structure of this
     data in order to use it to build your component function
@@ -28,12 +56,12 @@
     user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+
 
 /*
   STEP 3: Create a function that accepts a single object as its only argument.
     Using DOM methods and properties, create and return the following markup:
-
+   
     <div class="card">
       <img src={image url of user} />
       <div class="card-info">
@@ -49,7 +77,46 @@ const followersArray = [];
       </div>
     </div>
 */
+// "https://github.com/19jlevitre"
 
+
+
+function userMaker({ avatar_url, name, login, location, html_url, followers, following, bio }){
+  const userCard = document.createElement('div');
+  const userImg = document.createElement('img');
+  const userInfo = document.createElement('div');
+  const userNameShown = document.createElement('h3');
+  const userName = document.createElement('p');
+  const userLocation = document.createElement('p');
+  const userProfile = document.createElement('p');
+  const userHtml = document.createElement('a');
+  const userFollowers = document.createElement('p');
+  const userFollowing = document.createElement('p');
+  const userBio = document.createElement('p');
+  userCard.classList.add('card');
+  userImg.src = avatar_url;
+  userInfo.classList.add('card-info');
+  userNameShown.textContent = ` User's name: ${name}`;
+  userName.textContent = `Username: ${login}`;
+  userLocation.textContent = `Location: ${location}`;
+  userHtml.href = html_url;
+  userFollowers.textContent = `Followers: ${followers}`;
+  userFollowing.textContent = `Following: ${following}`
+  userBio.textContent = `Bio: ${bio}`;
+  userCard.appendChild(userImg);
+  userCard.appendChild(userInfo);
+  userInfo.appendChild(userNameShown);
+  userInfo.appendChild(userName);
+  userInfo.appendChild(userLocation);
+  userInfo.appendChild(userProfile);
+  userProfile.appendChild(userHtml);
+  userInfo.appendChild(userFollowers);
+  userInfo.appendChild(userFollowing);
+  userInfo.appendChild(userBio);
+  return userCard;
+}
+
+  // console.log(userMaker({ avatar_url, name, login, location, html_url, followers, following, bio }));
 /*
   List of LS Instructors Github username's:
     tetondan
